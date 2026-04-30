@@ -1,0 +1,5 @@
+export * from './gt-common.types'
+export * from './gt-litoral.types'
+export * from './gt-saude.types'
+export * from './gt-transportes.types'
+export * from './upload'

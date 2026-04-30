@@ -1,0 +1,135 @@
+# ==================================
+# DOCKERFILE PARA API - PRODUÇÃO
+# ==================================
+# Multi-stage build para API Node.js com GDAL/PostGIS
+# Otimizado para Docker Swarm e redução de tamanho final
+
+# ----------------------------------
+# STAGE 1: Base com dependências do sistema
+# ----------------------------------
+FROM node:20-bookworm-slim AS base
+
+WORKDIR /workspace
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+
+# Instalar dependências do sistema necessárias para GDAL e PostGIS
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  gdal-bin \
+  libgdal-dev \
+  proj-bin \
+  libproj-dev \
+  libgeos-dev \
+  libpq-dev \
+  postgresql-client \
+  build-essential \
+  python3 \
+  make \
+  g++ \
+  bash \
+  curl \
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/* \
+  && corepack enable \
+  && corepack prepare pnpm@9.12.2 --activate
+
+# Copiar apenas manifests para melhor cache de layers
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.json ./
+COPY apps/api/package.json apps/api/
+COPY packages/shared/package.json packages/shared/
+
+# Instalar todas as dependências (incluindo devDependencies para build)
+RUN pnpm install --frozen-lockfile --filter @napi-aguas/api...
+
+# ----------------------------------
+# STAGE 2: Builder - Compilação TypeScript
+# ----------------------------------
+FROM base AS builder
+
+COPY apps/api apps/api
+COPY packages/shared packages/shared
+
+# Build do pacote shared primeiro
+WORKDIR /workspace/packages/shared
+RUN pnpm build
+
+# Build da API
+WORKDIR /workspace/apps/api
+RUN pnpm build
+
+# ----------------------------------
+# STAGE 3: Imagem final de produção
+# ----------------------------------
+FROM node:20-bookworm-slim
+
+WORKDIR /workspace
+
+# Instalar runtime dependencies + build dependencies temporariamente
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  gdal-bin \
+  libgdal-dev \
+  proj-bin \
+  libproj-dev \
+  libgeos-dev \
+  libpq-dev \
+  postgresql-client \
+  curl \
+  bash \
+  ca-certificates \
+  gosu \
+  && apt-get install -y --no-install-recommends \
+  build-essential \
+  python3 \
+  make \
+  g++ \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+
+RUN corepack enable && corepack prepare pnpm@9.12.2 --activate
+
+# Copiar manifests para instalar apenas dependências de produção
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+COPY apps/api/package.json apps/api/
+COPY packages/shared/package.json packages/shared/
+
+# Instalar dependências (incluindo tsx para runtime)
+RUN pnpm install --frozen-lockfile --filter @napi-aguas/api... \
+  && apt-get purge -y build-essential python3 make g++ \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/apt/lists/*
+
+# Copiar artefatos compilados do estágio builder
+COPY --from=builder /workspace/apps/api/dist apps/api/dist
+COPY --from=builder /workspace/packages/shared/dist packages/shared/dist
+# Copiar arquivos de migration (necessários para aplicar migrations em produção)
+COPY --from=builder /workspace/apps/api/src/db/migrations apps/api/dist/src/db/migrations
+COPY apps/api/package.json apps/api/
+COPY packages/shared/package.json packages/shared/
+
+WORKDIR /workspace/apps/api
+
+# Definir variáveis de ambiente padrão (podem ser sobrescritas)
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Criar usuário não-root para segurança
+RUN groupadd --system napiaguas && useradd --system --gid napiaguas napiaguas \
+  && chown -R napiaguas:napiaguas /workspace
+
+# Copiar e configurar entrypoint
+COPY deploy-files/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Expor porta da API
+EXPOSE 3000
+
+# Healthcheck para Docker Swarm
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Entrypoint que cria diretórios e executa como napiaguas
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["node", "dist/src/server.js"]

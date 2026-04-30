@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "moduleResolution": "node10",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "ignoreDeprecations": "5.0"
+  },
+  "files": [],
+  "references": [
+    { "path": "./apps/web" },
+    { "path": "./apps/api" },
+    { "path": "./packages/shared" }
+  ]
+}

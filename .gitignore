@@ -1,0 +1,41 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node / pnpm
+node_modules
+apps/**/node_modules
+packages/**/node_modules
+.pnpm-store
+
+# Builds
+dist
+apps/**/dist
+packages/**/dist
+dist-ssr
+coverage
+build
+*.tsbuildinfo
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+.env.prod
+!.env.example
+!.env.prod.example
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

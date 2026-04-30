@@ -1,0 +1,181 @@
+# ==================================
+# .dockerignore
+# ==================================
+# Arquivos e diretórios a ignorar durante docker build
+# Reduz tamanho do contexto de build e melhora performance
+
+# ==================================
+# Git
+# ==================================
+.git
+.gitignore
+.gitattributes
+.github
+
+# ==================================
+# Node.js
+# ==================================
+node_modules
+**/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store
+
+# ==================================
+# Build outputs
+# ==================================
+dist
+**/dist
+build
+**/build
+out
+.next
+.nuxt
+.cache
+
+# ==================================
+# Environment & Config
+# ==================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+*.local
+
+# ==================================
+# IDE & Editors
+# ==================================
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==================================
+# Testing
+# ==================================
+coverage
+.nyc_output
+*.test.ts
+*.spec.ts
+**/__tests__
+**/__mocks__
+.vitest
+
+# ==================================
+# Documentation
+# ==================================
+*.md
+!README.md
+docs
+documentation
+CHANGELOG.md
+LICENSE
+
+# ==================================
+# CI/CD
+# ==================================
+.travis.yml
+.gitlab-ci.yml
+azure-pipelines.yml
+.circleci
+.github/workflows
+
+# ==================================
+# Docker
+# ==================================
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+*.dockerfile
+
+# ==================================
+# Logs
+# ==================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==================================
+# Temporary files
+# ==================================
+tmp
+temp
+*.tmp
+*.temp
+
+# ==================================
+# Scripts de desenvolvimento
+# ==================================
+scripts/dev-*.sh
+scripts/test-*.sh
+
+# ==================================
+# Backups
+# ==================================
+*.backup
+*.bak
+*.old
+backups/
+*.sql
+*.dump
+
+# ==================================
+# Infrastructure (apenas para dev)
+# ==================================
+infrastructure/docker/docker-compose.dev.yml
+infrastructure/backups/
+
+# ==================================
+# Deploy files (não necessários na imagem)
+# ==================================
+deploy-files/
+
+# ==================================
+# Agents e automação
+# ==================================
+.bmad-core/
+.claude/
+.gemini/
+.ai/
+AGENTS.md
+
+# ==================================
+# Arquivos específicos do projeto
+# ==================================
+relatorio-*.md
+test-data-preview.csv
+
+# ==================================
+# Certificados (nunca incluir no build!)
+# ==================================
+*.pem
+*.key
+*.crt
+*.csr
+certs/
+ssl/
+
+# ==================================
+# Data files (não necessários no container)
+# ==================================
+data/
+*.gpkg
+*.geojson
+*.csv
+*.shp
+*.shx
+*.dbf
+*.prj
+
+# Exceções: permitir arquivos essenciais
+!apps/api/drizzle/
+!apps/api/src/db/

@@ -1,0 +1,14 @@
+# syntax=docker/dockerfile:1
+# Base image: PostgreSQL 16 with PostGIS 3.4 support
+# Environment variables:
+#   POSTGRES_USER     - database superuser (default: postgres)
+#   POSTGRES_PASSWORD - password for POSTGRES_USER (default: postgres)
+#   POSTGRES_DB       - default database to create (default: napi_aguas_dev)
+FROM postgis/postgis:16-3.4
+
+ENV POSTGRES_USER=postgres \
+    POSTGRES_PASSWORD=postgres \
+    POSTGRES_DB=napi_aguas_dev
+
+COPY infrastructure/docker/init-db.sh /docker-entrypoint-initdb.d/init-db.sh
+RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh

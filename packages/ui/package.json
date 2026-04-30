@@ -1,0 +1,35 @@
+{
+  "name": "@napi-aguas/ui",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
+  },
+  "dependencies": {
+    "@napi-aguas/shared": "workspace:*",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.16",
+    "esbuild": "^0.25.10",
+    "tsup": "^8.5.0"
+  }
+}

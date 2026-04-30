@@ -1,0 +1,63 @@
+# syntax=docker/dockerfile:1.6
+# Development image for @napi-aguas/api
+# Node.js 20.x (Debian Bookworm) with GDAL 3.8+ for geospatial processing
+FROM node:20-bookworm AS base
+
+LABEL maintainer="NAPI Águas" \
+      description="Development and build image for the NAPI Águas API"
+
+# Install GDAL ecosystem and enable pnpm via corepack
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+      gdal-bin \
+      libgdal-dev \
+      proj-bin \
+      libproj-dev \
+      libgeos-dev \
+      postgresql-client \
+      build-essential \
+      bash \
+    && rm -rf /var/lib/apt/lists/* \
+    && corepack enable \
+    && corepack prepare pnpm@9.12.2 --activate
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH="$PNPM_HOME:$PATH"
+
+WORKDIR /workspace
+
+# Prime workspace metadata for deterministic installs
+COPY pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml ./
+COPY tsconfig.json ./
+COPY apps/api/package.json apps/api/
+COPY packages/shared/package.json packages/shared/
+COPY packages/ui/package.json packages/ui/
+
+RUN pnpm install --frozen-lockfile --filter @napi-aguas/api...
+
+# Development stage used by docker compose
+FROM base AS development
+
+ENV NODE_ENV=development
+
+# Copy source (will be overridden by bind mounts during local dev)
+COPY . .
+
+WORKDIR /workspace/apps/api
+
+CMD ["pnpm", "dev:docker"]
+
+# Production build stage (future use)
+FROM base AS production
+
+ENV NODE_ENV=production
+
+COPY . .
+
+WORKDIR /workspace/apps/api
+
+RUN pnpm install --frozen-lockfile --filter @napi-aguas/api... \
+    && pnpm --filter @napi-aguas/api build
+
+CMD ["node", "dist/index.js"]

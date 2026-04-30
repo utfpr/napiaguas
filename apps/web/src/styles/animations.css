@@ -1,0 +1,86 @@
+/* Animações para Landing Page */
+
+/* Fade in com movimento para cima */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in simples */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Pulse suave para elementos destacados */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Bounce para indicador de scroll */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Aplicar animações aos elementos do hero */
+.hero-content {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-logo {
+  animation: fadeIn 1s ease-out;
+}
+
+.hero-text {
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.hero-actions {
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.hero-visual {
+  animation: fadeIn 1.2s ease-out 0.3s backwards;
+}
+
+.hero-glow {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+/* Respeitar preferência de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-logo,
+  .hero-text,
+  .hero-actions,
+  .hero-visual,
+  .hero-glow {
+    animation: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

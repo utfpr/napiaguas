@@ -1,0 +1,40 @@
+{
+  "name": "@napi-aguas/monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.12.2",
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --names \"docker,web\" --prefix-colors \"cyan,magenta\" \"pnpm dev:docker\" \"pnpm dev:web\"",
+    "dev:docker": "./scripts/docker-compose-dev.sh up --build",
+    "dev:web": "pnpm --filter @napi-aguas/web dev",
+    "dev:api": "pnpm --filter @napi-aguas/api dev",
+    "docker:clean": "./scripts/docker-compose-dev.sh down -v",
+    "build": "pnpm -r --filter ./... build",
+    "lint": "pnpm -r --filter ./... lint",
+    "format": "pnpm -r --filter ./... format",
+    "format:write": "pnpm -r --filter ./... format:write",
+    "db:migrate": "pnpm --filter @napi-aguas/api db:migrate",
+    "db:seed": "pnpm --filter @napi-aguas/api db:seed",
+    "clean": "rimraf node_modules pnpm-lock.yaml apps/**/node_modules packages/**/node_modules **/dist"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^24.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "globals": "^16.4.0",
+    "prettier": "^3.4.2",
+    "rimraf": "^5.0.10",
+    "typescript": "~5.9.3"
+  },
+  "dependencies": {
+    "react-dropzone": "^14.3.8"
+  }
+}

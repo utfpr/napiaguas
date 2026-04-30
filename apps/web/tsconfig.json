@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/routes/*": ["./src/routes/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/stores/*": ["./src/stores/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/styles/*": ["./src/styles/*"]
+    },
+    "types": ["vite/client"],
+    "noEmit": true
+  },
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../packages/shared" }
+  ]
+}

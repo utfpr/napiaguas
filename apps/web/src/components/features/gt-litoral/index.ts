@@ -1,0 +1,7 @@
+export * from './GTLitoralDashboard'
+export * from './GTLitoralDetailsPanel'
+export * from './GTLitoralFilters'
+export * from './GTLitoralMunicipiosList'
+export * from './GTLitoralMap'
+export * from './IndicatorChart'
+export * from './IndicatorTrend'

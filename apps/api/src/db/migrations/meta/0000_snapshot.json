@@ -1,0 +1,1882 @@
+{
+  "id": "e6e585a9-4ca6-4c3d-8a1c-c3ee7756115c",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.workgroups": {
+      "name": "workgroups",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "color": {
+          "name": "color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "geometry_type": {
+          "name": "geometry_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.geometries_agua_doce": {
+      "name": "geometries_agua_doce",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "geometry": {
+          "name": "geometry",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "properties": {
+          "name": "properties",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "simplified": {
+          "name": "simplified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "geometries_agua_doce_workgroup_id_workgroups_id_fk": {
+          "name": "geometries_agua_doce_workgroup_id_workgroups_id_fk",
+          "tableFrom": "geometries_agua_doce",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hydrobasins_geometries": {
+      "name": "hydrobasins_geometries",
+      "schema": "",
+      "columns": {
+        "hybas_id": {
+          "name": "hybas_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "geometry": {
+          "name": "geometry",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "simplified_geometry": {
+          "name": "simplified_geometry",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "properties": {
+          "name": "properties",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_hydrobasins_geometry": {
+          "name": "idx_hydrobasins_geometry",
+          "columns": [
+            {
+              "expression": "geometry",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gist",
+          "with": {}
+        },
+        "idx_hydrobasins_simplified_geometry": {
+          "name": "idx_hydrobasins_simplified_geometry",
+          "columns": [
+            {
+              "expression": "simplified_geometry",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gist",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.municipality_geometries": {
+      "name": "municipality_geometries",
+      "schema": "",
+      "columns": {
+        "codigo": {
+          "name": "codigo",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "municipio": {
+          "name": "municipio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "geometry": {
+          "name": "geometry",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "simplified_geometry": {
+          "name": "simplified_geometry",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "properties": {
+          "name": "properties",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_municipality_geometry": {
+          "name": "idx_municipality_geometry",
+          "columns": [
+            {
+              "expression": "geometry",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gist",
+          "with": {}
+        },
+        "idx_municipality_simplified_geometry": {
+          "name": "idx_municipality_simplified_geometry",
+          "columns": [
+            {
+              "expression": "simplified_geometry",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gist",
+          "with": {}
+        },
+        "idx_municipality_municipio": {
+          "name": "idx_municipality_municipio",
+          "columns": [
+            {
+              "expression": "municipio",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.indicator_hierarchy": {
+      "name": "indicator_hierarchy",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "indicator_type_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "unit": {
+          "name": "unit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "indicator_hierarchy_code_unique": {
+          "name": "indicator_hierarchy_code_unique",
+          "columns": [
+            {
+              "expression": "code",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "indicator_hierarchy_workgroup_id_workgroups_id_fk": {
+          "name": "indicator_hierarchy_workgroup_id_workgroups_id_fk",
+          "tableFrom": "indicator_hierarchy",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "indicator_hierarchy_parent_id_indicator_hierarchy_id_fk": {
+          "name": "indicator_hierarchy_parent_id_indicator_hierarchy_id_fk",
+          "tableFrom": "indicator_hierarchy",
+          "tableTo": "indicator_hierarchy",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "indicator_hierarchy_parent_check": {
+          "name": "indicator_hierarchy_parent_check",
+          "value": "\n        (\n          \"indicator_hierarchy\".\"type\" = 'indice'::indicator_type_enum AND \"indicator_hierarchy\".\"parent_id\" IS NULL\n        )\n        OR (\n          \"indicator_hierarchy\".\"type\" <> 'indice'::indicator_type_enum AND \"indicator_hierarchy\".\"parent_id\" IS NOT NULL\n        )\n      "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.indicator_values": {
+      "name": "indicator_values",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hybas_id": {
+          "name": "hybas_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric(14, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "normalized_value": {
+          "name": "normalized_value",
+          "type": "numeric(6, 4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "indicator_values_indicator_hybas_unique": {
+          "name": "indicator_values_indicator_hybas_unique",
+          "columns": [
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "hybas_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "indicator_values_indicator_id_indicator_hierarchy_id_fk": {
+          "name": "indicator_values_indicator_id_indicator_hierarchy_id_fk",
+          "tableFrom": "indicator_values",
+          "tableTo": "indicator_hierarchy",
+          "columnsFrom": [
+            "indicator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "indicator_values_hybas_id_hydrobasins_geometries_hybas_id_fk": {
+          "name": "indicator_values_hybas_id_hydrobasins_geometries_hybas_id_fk",
+          "tableFrom": "indicator_values",
+          "tableTo": "hydrobasins_geometries",
+          "columnsFrom": [
+            "hybas_id"
+          ],
+          "columnsTo": [
+            "hybas_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "indicator_values_normalized_value_range": {
+          "name": "indicator_values_normalized_value_range",
+          "value": "\n      \"indicator_values\".\"normalized_value\" IS NULL OR\n      (\"indicator_values\".\"normalized_value\" >= 0 AND \"indicator_values\".\"normalized_value\" <= 1)\n    "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.health_indicator_values": {
+      "name": "health_indicator_values",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codigo_municipio": {
+          "name": "codigo_municipio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric(14, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "normalized_value": {
+          "name": "normalized_value",
+          "type": "numeric(6, 4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_health_indicator_municipio": {
+          "name": "idx_health_indicator_municipio",
+          "columns": [
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "codigo_municipio",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_health_indicator_municipio": {
+          "name": "uq_health_indicator_municipio",
+          "columns": [
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "codigo_municipio",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "health_indicator_values_indicator_id_indicator_hierarchy_id_fk": {
+          "name": "health_indicator_values_indicator_id_indicator_hierarchy_id_fk",
+          "tableFrom": "health_indicator_values",
+          "tableTo": "indicator_hierarchy",
+          "columnsFrom": [
+            "indicator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "health_indicator_values_codigo_municipio_municipality_geometries_codigo_fk": {
+          "name": "health_indicator_values_codigo_municipio_municipality_geometries_codigo_fk",
+          "tableFrom": "health_indicator_values",
+          "tableTo": "municipality_geometries",
+          "columnsFrom": [
+            "codigo_municipio"
+          ],
+          "columnsTo": [
+            "codigo"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "health_indicator_values_normalized_value_range": {
+          "name": "health_indicator_values_normalized_value_range",
+          "value": "\n        \"health_indicator_values\".\"normalized_value\" IS NULL OR\n        (\"health_indicator_values\".\"normalized_value\" >= 0 AND \"health_indicator_values\".\"normalized_value\" <= 1)\n      "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.coastal_indicator_values": {
+      "name": "coastal_indicator_values",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codigo_municipio": {
+          "name": "codigo_municipio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric(14, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "normalized_value": {
+          "name": "normalized_value",
+          "type": "numeric(6, 4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_coastal_indicator_municipio": {
+          "name": "idx_coastal_indicator_municipio",
+          "columns": [
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "codigo_municipio",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_coastal_indicator_municipio": {
+          "name": "uq_coastal_indicator_municipio",
+          "columns": [
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "codigo_municipio",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "coastal_indicator_values_indicator_id_indicator_hierarchy_id_fk": {
+          "name": "coastal_indicator_values_indicator_id_indicator_hierarchy_id_fk",
+          "tableFrom": "coastal_indicator_values",
+          "tableTo": "indicator_hierarchy",
+          "columnsFrom": [
+            "indicator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "coastal_indicator_values_codigo_municipio_municipality_geometries_codigo_fk": {
+          "name": "coastal_indicator_values_codigo_municipio_municipality_geometries_codigo_fk",
+          "tableFrom": "coastal_indicator_values",
+          "tableTo": "municipality_geometries",
+          "columnsFrom": [
+            "codigo_municipio"
+          ],
+          "columnsTo": [
+            "codigo"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "coastal_indicator_values_normalized_value_range": {
+          "name": "coastal_indicator_values_normalized_value_range",
+          "value": "\n        \"coastal_indicator_values\".\"normalized_value\" IS NULL OR\n        (\"coastal_indicator_values\".\"normalized_value\" >= 0 AND \"coastal_indicator_values\".\"normalized_value\" <= 1)\n      "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.indicators": {
+      "name": "indicators",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unit": {
+          "name": "unit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "indicators_workgroup_id_workgroups_id_fk": {
+          "name": "indicators_workgroup_id_workgroups_id_fk",
+          "tableFrom": "indicators",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "indicators_parent_id_indicators_id_fk": {
+          "name": "indicators_parent_id_indicators_id_fk",
+          "tableFrom": "indicators",
+          "tableTo": "indicators",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.geometries_transportes": {
+      "name": "geometries_transportes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "road_type": {
+          "name": "road_type",
+          "type": "road_type_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "geometry": {
+          "name": "geometry",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "length_km": {
+          "name": "length_km",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "geometries_transportes_workgroup_id_workgroups_id_fk": {
+          "name": "geometries_transportes_workgroup_id_workgroups_id_fk",
+          "tableFrom": "geometries_transportes",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.indicators_transportes": {
+      "name": "indicators_transportes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unit": {
+          "name": "unit",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "level": {
+          "name": "level",
+          "type": "indicator_level_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "indicators_transportes_workgroup_id_workgroups_id_fk": {
+          "name": "indicators_transportes_workgroup_id_workgroups_id_fk",
+          "tableFrom": "indicators_transportes",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "indicators_transportes_parent_id_indicators_transportes_id_fk": {
+          "name": "indicators_transportes_parent_id_indicators_transportes_id_fk",
+          "tableFrom": "indicators_transportes",
+          "tableTo": "indicators_transportes",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.indicator_data": {
+      "name": "indicator_data",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "geometry_id": {
+          "name": "geometry_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric(10, 4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "normalized_value": {
+          "name": "normalized_value",
+          "type": "numeric(5, 4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "indicator_data_geometry_indicator_unique": {
+          "name": "indicator_data_geometry_indicator_unique",
+          "columns": [
+            {
+              "expression": "geometry_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "indicator_data_geometry_id_geometries_transportes_id_fk": {
+          "name": "indicator_data_geometry_id_geometries_transportes_id_fk",
+          "tableFrom": "indicator_data",
+          "tableTo": "geometries_transportes",
+          "columnsFrom": [
+            "geometry_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "indicator_data_indicator_id_indicators_transportes_id_fk": {
+          "name": "indicator_data_indicator_id_indicators_transportes_id_fk",
+          "tableFrom": "indicator_data",
+          "tableTo": "indicators_transportes",
+          "columnsFrom": [
+            "indicator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.export_logs": {
+      "name": "export_logs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "format": {
+          "name": "format",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_ip": {
+          "name": "user_ip",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "records_count": {
+          "name": "records_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "file_size_bytes": {
+          "name": "file_size_bytes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_export_logs_workgroup": {
+          "name": "idx_export_logs_workgroup",
+          "columns": [
+            {
+              "expression": "workgroup_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_export_logs_created_at": {
+          "name": "idx_export_logs_created_at",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "export_logs_workgroup_id_workgroups_id_fk": {
+          "name": "export_logs_workgroup_id_workgroups_id_fk",
+          "tableFrom": "export_logs",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.admin_users": {
+      "name": "admin_users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "user_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'gt_member'"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "admin_users_workgroup_id_workgroups_id_fk": {
+          "name": "admin_users_workgroup_id_workgroups_id_fk",
+          "tableFrom": "admin_users",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "admin_users_email_unique": {
+          "name": "admin_users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.staging_uploads": {
+      "name": "staging_uploads",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.upload_logs": {
+      "name": "upload_logs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workgroup_id": {
+          "name": "workgroup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "file_size_bytes": {
+          "name": "file_size_bytes",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "features_count": {
+          "name": "features_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "indicators_loaded": {
+          "name": "indicators_loaded",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "errors": {
+          "name": "errors",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stats": {
+          "name": "stats",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "idx_upload_logs_user_id": {
+          "name": "idx_upload_logs_user_id",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_upload_logs_status": {
+          "name": "idx_upload_logs_status",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_upload_logs_created_at": {
+          "name": "idx_upload_logs_created_at",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "upload_logs_user_id_admin_users_id_fk": {
+          "name": "upload_logs_user_id_admin_users_id_fk",
+          "tableFrom": "upload_logs",
+          "tableTo": "admin_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "upload_logs_workgroup_id_workgroups_id_fk": {
+          "name": "upload_logs_workgroup_id_workgroups_id_fk",
+          "tableFrom": "upload_logs",
+          "tableTo": "workgroups",
+          "columnsFrom": [
+            "workgroup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "upload_logs_status_check": {
+          "name": "upload_logs_status_check",
+          "value": "\"upload_logs\".\"status\" in ('processing', 'validating', 'completed', 'failed', 'committed', 'cancelled', 'expired')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.comite_aggregations": {
+      "name": "comite_aggregations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "comite_nome": {
+          "name": "comite_nome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "indicator_id": {
+          "name": "indicator_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mean_value": {
+          "name": "mean_value",
+          "type": "numeric(10, 4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_value": {
+          "name": "min_value",
+          "type": "numeric(10, 4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_value": {
+          "name": "max_value",
+          "type": "numeric(10, 4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "comite_aggregations_comite_indicator_unique": {
+          "name": "comite_aggregations_comite_indicator_unique",
+          "columns": [
+            {
+              "expression": "comite_nome",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_comite_aggregations_comite": {
+          "name": "idx_comite_aggregations_comite",
+          "columns": [
+            {
+              "expression": "comite_nome",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_comite_aggregations_indicator": {
+          "name": "idx_comite_aggregations_indicator",
+          "columns": [
+            {
+              "expression": "indicator_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "comite_aggregations_indicator_id_indicator_hierarchy_id_fk": {
+          "name": "comite_aggregations_indicator_id_indicator_hierarchy_id_fk",
+          "tableFrom": "comite_aggregations",
+          "tableTo": "indicator_hierarchy",
+          "columnsFrom": [
+            "indicator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.indicator_type_enum": {
+      "name": "indicator_type_enum",
+      "schema": "public",
+      "values": [
+        "indice",
+        "subindice",
+        "indicador"
+      ]
+    },
+    "public.road_type_enum": {
+      "name": "road_type_enum",
+      "schema": "public",
+      "values": [
+        "federal",
+        "estadual"
+      ]
+    },
+    "public.indicator_level_enum": {
+      "name": "indicator_level_enum",
+      "schema": "public",
+      "values": [
+        "index",
+        "subindex",
+        "indicator"
+      ]
+    },
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "public",
+      "values": [
+        "admin",
+        "gt_member"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

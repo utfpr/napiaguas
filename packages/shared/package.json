@@ -1,0 +1,32 @@
+{
+  "name": "@napi-aguas/shared",
+  "version": "1.0.0",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./types/upload": {
+      "types": "./dist/types/upload.d.ts",
+      "require": "./dist/cjs/types/upload.js",
+      "import": "./dist/esm/types/upload.js",
+      "default": "./dist/esm/types/upload.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
+    "lint": "eslint \"src/**/*.ts\"",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
+  },
+  "dependencies": {
+    "zod": "3.24.1"
+  }
+}

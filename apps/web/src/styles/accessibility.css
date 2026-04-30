@@ -1,0 +1,82 @@
+/**
+ * Acessibilidade - NAPI Águas
+ * Classes e estilos para melhorar a acessibilidade WCAG 2.1 AA
+ */
+
+/* Screen Reader Only - esconde visualmente mas mantém acessível */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Focus rings - apenas quando navegando por teclado */
+.keyboard-navigation *:focus {
+  outline: 2px solid #0099CC;
+  outline-offset: 2px;
+}
+
+/* Skip to content link - aparece apenas no foco */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background-color: #0099CC;
+  color: white;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Reduzir movimento para usuários com prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  * {
+    border-color: currentColor !important;
+  }
+}

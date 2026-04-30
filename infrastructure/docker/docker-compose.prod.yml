@@ -1,0 +1,70 @@
+services:
+  web:
+    image: ${IMAGE_WEB_REPOSITORY:-napiaguas-web}:${VERSION:-latest}
+    container_name: napiaguas-web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - napiaguas-net
+
+  api:
+    image: ${IMAGE_API_REPOSITORY:-napiaguas-api}:${VERSION:-latest}
+    container_name: napiaguas-api
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../.env.prod
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - napiaguas-net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: napiaguas-db
+    env_file:
+      - ../../.env.prod
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - napiaguas-net
+
+volumes:
+  postgres_data:
+
+networks:
+  napiaguas-net:
+    driver: bridge

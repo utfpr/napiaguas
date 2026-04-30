@@ -1,0 +1,31 @@
+# Node / pnpm
+node_modules
+**/node_modules
+.pnpm-store
+pnpm-debug.log
+
+# Builds e artefatos
+dist
+**/dist
+build
+**/build
+coverage
+
+# Controle de versão
+.git
+.gitignore
+
+# Documentação (não vai para imagem)
+_docs
+README.md
+
+# Configurações locais
+.env
+.env.*
+!.env.example
+!.env.prod.example
+
+# Outros
+*.local
+*.log
+.DS_Store

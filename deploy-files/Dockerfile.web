@@ -1,0 +1,84 @@
+# ==================================
+# DOCKERFILE PARA WEB (FRONTEND) - PRODUÇÃO
+# ==================================
+# Multi-stage build para aplicação React com Vite
+# Build estático servido via NGINX com compressão
+
+# ----------------------------------
+# STAGE 1: Base com Node.js e pnpm
+# ----------------------------------
+FROM node:20-alpine AS base
+
+WORKDIR /workspace
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+
+RUN corepack enable && corepack prepare pnpm@9.12.2 --activate
+
+# Copiar manifests para cache de dependências
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.json ./
+COPY apps/web/package.json apps/web/
+COPY packages/shared/package.json packages/shared/
+COPY packages/ui/package.json packages/ui/
+
+# Instalar dependências
+RUN pnpm install --frozen-lockfile --filter @napi-aguas/web...
+
+# ----------------------------------
+# STAGE 2: Builder - Build do frontend
+# ----------------------------------
+FROM base AS builder
+
+# Argumentos de build para variáveis de ambiente do Vite
+ARG VITE_API_URL
+ARG VITE_APP_NAME=NAPI Águas
+ARG VITE_ENABLE_ANALYTICS=true
+
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_APP_NAME=$VITE_APP_NAME
+ENV VITE_ENABLE_ANALYTICS=$VITE_ENABLE_ANALYTICS
+
+COPY apps/web apps/web
+COPY packages/shared packages/shared
+COPY packages/ui packages/ui
+
+# Build dos pacotes shared e ui primeiro
+WORKDIR /workspace/packages/shared
+RUN pnpm build
+
+WORKDIR /workspace/packages/ui
+RUN pnpm build
+
+# Build da aplicação web
+WORKDIR /workspace/apps/web
+RUN pnpm build
+
+# ----------------------------------
+# STAGE 3: Static server (Node + serve)
+# ----------------------------------
+FROM node:20-alpine
+
+WORKDIR /app
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+
+RUN corepack enable && corepack prepare pnpm@9.12.2 --activate \
+  && pnpm add --global serve
+
+# Copiar build final
+COPY --from=builder /workspace/apps/web/dist ./dist
+
+# Script de inicialização que injeta variáveis de ambiente em runtime
+COPY deploy-files/start-web.sh /usr/local/bin/start-web.sh
+RUN chmod +x /usr/local/bin/start-web.sh
+
+ENV WEB_PORT=5173
+
+EXPOSE 5173
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:5173/ || exit 1
+
+CMD ["start-web.sh"]

@@ -1,0 +1,28 @@
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.map-container .maplibregl-ctrl-top-right,
+.map-container .maplibregl-ctrl-top-left {
+  margin: 0.75rem;
+}
+
+.map-container .maplibregl-ctrl-group button {
+  width: 42px;
+  height: 42px;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .map-container .maplibregl-ctrl-group button {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.map-container .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  width: 100%;
+  height: 100%;
+}

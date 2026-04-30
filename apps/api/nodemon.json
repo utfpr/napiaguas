@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/nodemon",
+  "watch": [
+    "src",
+    "../../packages/shared/src",
+    "../../packages/ui/src"
+  ],
+  "ext": "ts,tsx,js,json",
+  "ignore": ["src/**/*.test.ts"],
+  "exec": "pnpm exec tsx src/server.ts"
+}
