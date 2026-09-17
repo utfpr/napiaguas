@@ -1,5 +1,10 @@
 import { ErrorBoundary } from '@/components/shared'
-import { HeroSection, GTNavigationCard, AboutSection } from '@/components/features/home'
+import {
+  HeroSection,
+  GTNavigationCard,
+  AboutSection,
+  TeamSection,
+} from '@/components/features/home'
 import { Footer } from '@/components/layout/Footer'
 import { Droplets, Waves, Heart, Truck } from 'lucide-react'
 
@@ -62,6 +67,9 @@ export const HomePage = () => {
 
           {/* Seção Sobre o Projeto */}
           <AboutSection />
+
+          {/* Seção Equipe Executora do Projeto */}
+          <TeamSection />
 
           {/* Footer */}
           <Footer />
