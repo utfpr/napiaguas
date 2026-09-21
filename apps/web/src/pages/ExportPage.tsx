@@ -1,3 +1,4 @@
+import { DocumentsList } from '@/components/features/export/DocumentsList'
 import { FilesList } from '@/components/features/export/FilesList'
 
 export function ExportPage() {
@@ -10,12 +11,13 @@ export function ExportPage() {
             Exportar Dados
           </h1>
           <p className="text-gray-600">
-            Baixe os arquivos CSV (tabelas) e GPKG (geoespaciais) com os dados dos indicadores de vulnerabilidade climática do Paraná.
+            Baixe os documentos do projeto (PDF) e os arquivos CSV (tabelas) e GPKG (geoespaciais) com os dados dos indicadores de vulnerabilidade climática do Paraná.
           </p>
         </div>
 
         {/* Lista de arquivos disponíveis */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <DocumentsList />
           <FilesList />
         </div>
       </div>
